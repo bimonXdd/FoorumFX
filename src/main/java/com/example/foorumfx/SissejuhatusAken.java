@@ -18,10 +18,11 @@ import java.io.IOException;
 * Kui teksti ei teki, siis pea meeles, et taust on must, ehk lisa 'mingi tekst'.setId("tekst") nt rida 54 sissejuhatus.setId("tekst");
 * See setId on vajalik, et tekst oleks roheline ja selle "tekst" id jargi saab kujundus.css fail aru, mida roheliseks teha.
 *
-*42-54 on näide, kuidas uue akna loomisega on.
-*
-*
+*   42-54 on näide, kuidas uue akna loomisega on.
 * setLayout asjad on koik lihtsalt objektide positsioneerimiseks.
+*
+*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!! Programm kaivitub aint Sissejuhatus.java aknast !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *
 * */
 
