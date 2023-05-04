@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -54,7 +56,11 @@ public class PeamineAken extends Application {
                 for (Arutelud teema : Arutelude_nimekiri) {
                     if (teema.getArutelu_nimi().equals(aruteluValik.getText())){
                         AruteluSisu uus = new AruteluSisu(teema,nimi);
-                        uus.start(stage); // teeb uue akna n-o
+                        try {
+                            uus.start(stage); // teeb uue akna n-o
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
 
                     }else{
 

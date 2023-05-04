@@ -21,6 +21,9 @@ import java.io.IOException;
 *   42-54 on näide, kuidas uue akna loomisega on.
 * setLayout asjad on koik lihtsalt objektide positsioneerimiseks.
 *
+* bug: kommentaare lisades ta valjastab neid nagu yle yhe. Yks kord null ja teine kord sonum.
+* Probleem on kommentaaridTekst grupis Arutelusisu.java failis
+*
 *
 * !!!!!!!!!!!!!!!!!!!!!!!!!!! Programm kaivitub aint Sissejuhatus.java aknast !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *

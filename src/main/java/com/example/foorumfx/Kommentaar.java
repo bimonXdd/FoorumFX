@@ -24,8 +24,7 @@ public class Kommentaar {
     }
 
     public String toString() {
-        return kommentaari_autor + ":" + "\n" +
-                kommentaari_sisu + "\n" +
-                kommentaari_loomise_aeg + "\n" + "\n";
+        return "\n"+kommentaari_autor + ":"  +kommentaari_loomise_aeg+ "\t\t"+
+                kommentaari_sisu;
     }
 }

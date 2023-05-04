@@ -13,16 +13,25 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AruteluSisu extends Application {
-    private Arutelud arutelu;
-    private String nimi;
+    private  static Arutelud arutelu;
+    private static String nimi;
 
     public AruteluSisu(Arutelud arutelu, String nimi) {
         this.arutelu = arutelu;
         this.nimi = nimi;
+    }
+
+    public static String getNimi() {
+        return nimi;
+    }
+
+    public static Arutelud getArutelu() {
+        return arutelu;
     }
 
     public static void main(String[] args) {
@@ -30,7 +39,7 @@ public class AruteluSisu extends Application {
     }
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         BorderPane layout = new BorderPane();
         Group grupp = new Group();
         Group kommentaaridTekst = new Group();
@@ -48,8 +57,14 @@ public class AruteluSisu extends Application {
         enter.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                arutelu.getArutelu_kommentaarid().add(new Kommentaar(nimi, uusKommentaar.getText())); //lisab uue kommentaari
-                VäljastaKommentaar(kommentaaridTekst);
+                try {
+                    arutelu.lisaKommentaar(new Kommentaar(nimi,uusKommentaar.getText())); //lisab uue kommentaari
+                    VäljastaKommentaar(kommentaaridTekst);
+                    uusKommentaar.clear();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
 
             }
         });
@@ -104,15 +119,25 @@ public class AruteluSisu extends Application {
 
     }
 
-    private Group VäljastaKommentaar(Group kommentaaridTekst) {
-        StringBuilder info = new StringBuilder();
-        List<Kommentaar> kommentaarid = new ArrayList<>(arutelu.getArutelu_kommentaarid());
-        for (Kommentaar x : kommentaarid) {
-            info.append("\n" + x.getKommentaari_loomise_aeg() + " " + x.getKommentaari_autor() + ": \t " + x.getKommentaari_sisu() + "\n");
-        }
-        Text kommentaar = new Text(info.toString());
+    private Group VäljastaKommentaar(Group kommentaaridTekst) throws IOException {
+        Text kommentaar = new Text(loeFailist("kommentaarid.dat"));
         kommentaar.setId("kommentaar");
         kommentaaridTekst.getChildren().add(kommentaar);
         return kommentaaridTekst;
     } // see peaks valjastama koik kommentaarid
+
+
+
+
+//---------------------------LoeFailist peaks lugema kommentaarid failist koik vajaliku-----------
+    private String loeFailist(String failiNimi) throws IOException {
+        StringBuilder koguKommentaarideTekst = new StringBuilder("");
+        try (BufferedReader lugeja = new BufferedReader(new InputStreamReader(new FileInputStream(failiNimi)))) {
+            String strCurrentLine;
+            while ((strCurrentLine = lugeja.readLine()) != null) {
+            koguKommentaarideTekst.append(lugeja.readLine()+"\n");}
+        }
+        return koguKommentaarideTekst.toString();
+    }
+
 }

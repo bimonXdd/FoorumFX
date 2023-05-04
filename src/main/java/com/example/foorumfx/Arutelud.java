@@ -1,5 +1,6 @@
 package com.example.foorumfx;
 
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,15 +42,23 @@ public class Arutelud implements Comparable<Arutelud>{
                 "; Arutelu algataja: "+ Algataja_nimi+
                 "; Arutelu loodi: "+ Arutelu_loomise_algus;
     }
+
+
     //meetod kommentaari lisamiseks
-    public void lisaKommentaar() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Sisesta oma nimi: ");
-        String autor = sc.nextLine();
-        System.out.println("Kirjuta kommentaar: ");
-        String sisu = sc.nextLine();
-        Arutelu_kommentaarid.add(new Kommentaar(autor, sisu));
+    public void lisaKommentaar(Kommentaar kommentaar) throws IOException {
+        String autor = AruteluSisu.getNimi();
+        String sisu =kommentaar.getKommentaari_sisu();
+        try{
+        lisaKommentaarFaili("kommentaarid.dat", new Kommentaar(autor, sisu).toString());}
+        catch (Exception e) {
+            DataOutputStream dataOut = new DataOutputStream(new FileOutputStream("kommentaarid.dat"));
+        }
+
+
+
     }
+
+
     //meetod arutelu ja selle kommentaaride ekraanile väljastamiseks
     public void esitaArutelu() {
         System.out.println(Arutelu_nimi);
@@ -65,5 +74,17 @@ public class Arutelud implements Comparable<Arutelud>{
     @Override
     public int compareTo(Arutelud o) {
         return this.Arutelu_nimi.compareTo(o.getArutelu_nimi());
+    }
+
+    public void lisaKommentaarFaili(String failiNimi, String sonum){
+
+        try(FileWriter fw = new FileWriter(failiNimi, true);
+            BufferedWriter writer = new BufferedWriter(fw);) {
+            writer.write(sonum);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
