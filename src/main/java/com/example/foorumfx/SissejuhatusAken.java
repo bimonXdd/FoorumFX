@@ -55,7 +55,7 @@ public class SissejuhatusAken extends Application {
 
         Text sissejuhatus = new Text("*****  Tere, \n*****  Olete jõudnud mingisse ägedasse foorumi,\n*****  kus saate " +
                 "uusi arutelusi luua, lisada\n*****  olemasolevatele aruteludele oma kommentaare " +
-                "ning näha teiste kommentaare. \n \nPalun valike nimi, millega sooviksite kommenteerida:");
+                "ning näha teiste kommentaare. \n \nPalun valige nimi, millega sooviksite kommenteerida:");
         sissejuhatus.setId("tekst");
         sissejuhatus.setLayoutY(-140);
         //------------------------------------------------------------------------------------
