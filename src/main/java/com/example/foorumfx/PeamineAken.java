@@ -58,7 +58,8 @@ public class PeamineAken extends Application {
         tere.setLayoutX(-225);
 
 //-----------------------------Lisa uus arutelu nupp--------------------
-        Button Lisa = new Button("Lisa uus arutelu");// pole veel midagi lisanud
+        Button Lisa = new Button("Lisa uus arutelu:");
+
 //------------------------------------------------------------------------------------
 
 
@@ -85,6 +86,28 @@ public class PeamineAken extends Application {
 //---------------------------------------------------------------------------------------------
 
         Lisa.setLayoutX(-200);
+        Lisa.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String pealkiri = aruteluValik.getText();
+                boolean konflikt = false;
+                for (Arutelud teema : Arutelude_nimekiri) {
+                    if (teema.getaruteluNimi().equals(pealkiri)) {
+                        VeaTeade veaTeade = new VeaTeade("See arutelu on juba olemas!");
+                        konflikt = true;
+                    }
+                }
+                if (konflikt == false) {
+                    Arutelud uus = new Arutelud(pealkiri, nimi);
+                    Arutelude_nimekiri.add(uus);
+                    try {
+                        uus.kirjutaFaili();
+                    } catch (IOException e) {
+                        VeaTeade veaTeade = new VeaTeade("IOException");
+                    }
+                }
+            }
+        });
 
         Group grupp = new Group();
 
