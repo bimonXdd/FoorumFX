@@ -13,6 +13,12 @@ public class Kommentaar {
         this.kommentaari_loomise_aeg = LocalDateTime.now();
     }
 
+    public Kommentaar(String kommentaari_autor, String kommentaari_sisu, LocalDateTime kommentaari_loomise_aeg) {
+        this.kommentaari_autor = kommentaari_autor;
+        this.kommentaari_sisu = kommentaari_sisu;
+        this.kommentaari_loomise_aeg = kommentaari_loomise_aeg;
+    }
+
     public String getKommentaari_autor() {
         return kommentaari_autor;
     }

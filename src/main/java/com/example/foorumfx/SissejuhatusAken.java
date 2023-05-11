@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 /*
 * Tahtis
 *
@@ -20,9 +21,6 @@ import java.io.IOException;
 *
 *   42-54 on näide, kuidas uue akna loomisega on.
 * setLayout asjad on koik lihtsalt objektide positsioneerimiseks.
-*
-* bug: kommentaare lisades ta valjastab neid nagu yle yhe. Yks kord null ja teine kord sonum.
-* Probleem on kommentaaridTekst grupis Arutelusisu.java failis
 *
 *
 * !!!!!!!!!!!!!!!!!!!!!!!!!!! Programm kaivitub aint Sissejuhatus.java aknast !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -46,6 +44,10 @@ public class SissejuhatusAken extends Application {
                 String sisestatudNimi;
                 if (nimi.getText().isEmpty()) {sisestatudNimi="NoName";}
                 else sisestatudNimi = nimi.getText();
+                ArrayList<Arutelud> Arutelude_nimekiri = new ArrayList<Arutelud>();
+                Arutelud Poliitika = new Arutelud("Poliitika", "Simon");        // see on suvaline testimiseks lisatud arutelu
+                Arutelude_nimekiri.add(Poliitika);
+                Poliitika.getaruteluKommentaarid().add(0,new Kommentaar("Simpson ","uououou mis siisn toimub"));
                 PeamineAken uus = new PeamineAken(sisestatudNimi);// loob uue akna
               uus.start(stage);
 

@@ -7,84 +7,90 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Arutelud implements Comparable<Arutelud>{
-    private String Arutelu_nimi;
-    private String Algataja_nimi; // Mõtlesin, et akki on hea, kui arutelul on huvitavat infot natuke.
-    private LocalDateTime Arutelu_loomise_algus;
-    private List<Kommentaar> Arutelu_kommentaarid;
+    private String aruteluNimi;
+    private String algatajaNimi; // Mõtlesin, et akki on hea, kui arutelul on huvitavat infot natuke.
+    private LocalDateTime aruteluLoomiseAalgus;
+    private List<Kommentaar> aruteluKommentaarid;
 
-    private int Vaatamiste_arv;
-    public Arutelud(String Arutelu_nimi, String Algataja_nimi){
-        this.Arutelu_nimi=Arutelu_nimi;
-        this.Algataja_nimi=Algataja_nimi;
-        this.Arutelu_loomise_algus = LocalDateTime.now();
-        this.Arutelu_kommentaarid = new ArrayList<Kommentaar>();
-        this.Vaatamiste_arv = (int) (Math.random() * 1000);
+    public Arutelud(String aruteluNimi, String algatajaNimi){
+        this.aruteluNimi=aruteluNimi;
+        this.algatajaNimi=Arutelud.this.algatajaNimi;
+        this.aruteluLoomiseAalgus = LocalDateTime.now();
+        this.aruteluKommentaarid = new ArrayList<Kommentaar>();
     }
 
-    public String getAlgataja_nimi() {
-        return Algataja_nimi;
+    public String getalgatajaNimi() {
+        return algatajaNimi;
     }
 
-    public String getArutelu_nimi() {
-        return Arutelu_nimi;
+    public String getaruteluNimi() {
+        return aruteluNimi;
     }
 
-    public LocalDateTime getArutelu_loomise_algus() {
-        return Arutelu_loomise_algus;
+    public LocalDateTime getaruteluLoomiseAalgus() {
+        return aruteluLoomiseAalgus;
     }
 
-    public List<Kommentaar> getArutelu_kommentaarid() { return Arutelu_kommentaarid; }
+    public List<Kommentaar> getaruteluKommentaarid() { return aruteluKommentaarid; }
 
     @Override
     public String toString() {
 
-        return "Arutelu teema: "+Arutelu_nimi+
-                "; Arutelu algataja: "+ Algataja_nimi+
-                "; Arutelu loodi: "+ Arutelu_loomise_algus;
+        return "Arutelu teema: "+aruteluNimi+
+                "; Arutelu algataja: "+ algatajaNimi+
+                "; Arutelu loodi: "+ aruteluLoomiseAalgus;
     }
-
-
     //meetod kommentaari lisamiseks
-    public void lisaKommentaar(Kommentaar kommentaar) throws IOException {
-        String autor = AruteluSisu.getNimi();
-        String sisu =kommentaar.getKommentaari_sisu();
-        try{
-        lisaKommentaarFaili("kommentaarid.dat", new Kommentaar(autor, sisu).toString());}
-        catch (Exception e) {
-            DataOutputStream dataOut = new DataOutputStream(new FileOutputStream("kommentaarid.dat"));
-        }
-
-
-
+    public void lisaKommentaar(String autor, String sisu) {
+        aruteluKommentaarid.add(new Kommentaar(autor, sisu));
     }
-
-
     //meetod arutelu ja selle kommentaaride ekraanile väljastamiseks
     public void esitaArutelu() {
-        System.out.println(Arutelu_nimi);
-        System.out.println("Algataja: " + Algataja_nimi);
-        System.out.println("Loomise aeg: " + Arutelu_loomise_algus);
-        System.out.println("Vaatamiste arv: " + Vaatamiste_arv);
+        System.out.println(aruteluNimi);
+        System.out.println("Algataja: " + algatajaNimi);
+        System.out.println("Loomise aeg: " + aruteluLoomiseAalgus);
         System.out.println("Kommentaarid: ");
-        for (Kommentaar kommentaar : Arutelu_kommentaarid) {
+        for (Kommentaar kommentaar : aruteluKommentaarid) {
             System.out.print(kommentaar);
         }
     }
 
-    @Override
-    public int compareTo(Arutelud o) {
-        return this.Arutelu_nimi.compareTo(o.getArutelu_nimi());
+    public Arutelud(File aruteluFail) throws FileNotFoundException, IOException {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(aruteluFail));
+            this.aruteluNimi = br.readLine();
+            this.algatajaNimi = br.readLine();
+            this.aruteluLoomiseAalgus = LocalDateTime.parse(br.readLine());
+            int kommentaarideArv = Integer.parseInt(br.readLine());
+            this.aruteluKommentaarid = new ArrayList<Kommentaar>();
+            for (int i = 0; i < kommentaarideArv; i++) {
+                aruteluKommentaarid.add(new Kommentaar(br.readLine(), br.readLine(), LocalDateTime.parse(br.readLine())));
+            }
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException();
+        } catch (IOException e) {
+            throw new IOException();
+        };
     }
 
-    public void lisaKommentaarFaili(String failiNimi, String sonum){
-
-        try(FileWriter fw = new FileWriter(failiNimi, true);
-            BufferedWriter writer = new BufferedWriter(fw);) {
-            writer.write(sonum);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public void kirjutaFaili() throws IOException {
+        String failinimi = "arutelud\\" + aruteluNimi + ".txt";
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File(failinimi)));
+        bw.write(aruteluNimi + "\n");
+        bw.write(algatajaNimi + "\n");
+        bw.write(aruteluLoomiseAalgus.toString() + "\n");
+        bw.write(aruteluKommentaarid.size() + "\n");
+        for (int i = 0; i < aruteluKommentaarid.size(); i++) {
+            Kommentaar kommentaar = aruteluKommentaarid.get(i);
+            bw.write(kommentaar.getKommentaari_autor() + "\n");
+            bw.write(kommentaar.getKommentaari_sisu() + "\n");
+            bw.write(kommentaar.getKommentaari_loomise_aeg().toString() + "\n");
         }
+        bw.close();
+    }
 
+    @Override
+    public int compareTo(Arutelud o) {
+        return this.aruteluNimi.compareTo(o.getaruteluNimi());
     }
 }

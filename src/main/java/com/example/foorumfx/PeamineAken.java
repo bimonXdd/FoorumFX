@@ -7,18 +7,40 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 
 public class PeamineAken extends Application {
+
     private String nimi;
-    public PeamineAken(String nimi){
-        this.nimi = nimi; // kasutaja nimi
+    private List<Arutelud> Arutelude_nimekiri;
+    public PeamineAken(String nimi) {
+        this.nimi = nimi; //kasutaja nimi
+        this.Arutelude_nimekiri = new ArrayList<Arutelud>();
+        File[] failid = new File("arutelud").listFiles();
+        for (File fail : failid) {
+            if (fail.isFile()) {
+                try {
+                    Arutelude_nimekiri.add(new Arutelud(fail));
+                } catch (FileNotFoundException e) {
+                    VeaTeade veaTeade = new VeaTeade("Arutelu faili ei leitud!");
+                    veaTeade.start(new Stage());
+                } catch (IOException e) {
+                    VeaTeade veaTeade = new VeaTeade("IOException");
+                    veaTeade.start(new Stage());
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -27,10 +49,6 @@ public class PeamineAken extends Application {
 
     @Override
     public void start(Stage stage) {
-        ArrayList<Arutelud> Arutelude_nimekiri = new ArrayList<Arutelud>();
-        Arutelud Poliitika = new Arutelud("Poliitika", "Simon");        // see on suvaline testimiseks lisatud arutelu
-        Arutelude_nimekiri.add(Poliitika);
-        Poliitika.getArutelu_kommentaarid().add(0,new Kommentaar("Simpson ","uououou mis siisn toimub"));
 
 //--------------------Tervitav tekst----------------------------------
         StackPane layout =new StackPane();
@@ -54,13 +72,9 @@ public class PeamineAken extends Application {
             @Override
             public void handle(ActionEvent event) {
                 for (Arutelud teema : Arutelude_nimekiri) {
-                    if (teema.getArutelu_nimi().equals(aruteluValik.getText())){
+                    if (teema.getaruteluNimi().equals(aruteluValik.getText())){
                         AruteluSisu uus = new AruteluSisu(teema,nimi);
-                        try {
-                            uus.start(stage); // teeb uue akna n-o
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                        uus.start(stage); // teeb uue akna n-o
 
                     }else{
 
