@@ -30,5 +30,6 @@ public class VeaTeade extends Application {
         Scene scene = new Scene(stackPane, 200, 100);
         primaryStage.setTitle("Viga!");
         primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

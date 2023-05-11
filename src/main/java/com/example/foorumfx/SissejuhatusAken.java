@@ -44,10 +44,6 @@ public class SissejuhatusAken extends Application {
                 String sisestatudNimi;
                 if (nimi.getText().isEmpty()) {sisestatudNimi="NoName";}
                 else sisestatudNimi = nimi.getText();
-                ArrayList<Arutelud> Arutelude_nimekiri = new ArrayList<Arutelud>();
-                Arutelud Poliitika = new Arutelud("Poliitika", "Simon");        // see on suvaline testimiseks lisatud arutelu
-                Arutelude_nimekiri.add(Poliitika);
-                Poliitika.getaruteluKommentaarid().add(0,new Kommentaar("Simpson ","uououou mis siisn toimub"));
                 PeamineAken uus = new PeamineAken(sisestatudNimi);// loob uue akna
               uus.start(stage);
 

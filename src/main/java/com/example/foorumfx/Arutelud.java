@@ -44,16 +44,6 @@ public class Arutelud implements Comparable<Arutelud>{
     public void lisaKommentaar(String autor, String sisu) {
         aruteluKommentaarid.add(new Kommentaar(autor, sisu));
     }
-    //meetod arutelu ja selle kommentaaride ekraanile väljastamiseks
-    public void esitaArutelu() {
-        System.out.println(aruteluNimi);
-        System.out.println("Algataja: " + algatajaNimi);
-        System.out.println("Loomise aeg: " + aruteluLoomiseAalgus);
-        System.out.println("Kommentaarid: ");
-        for (Kommentaar kommentaar : aruteluKommentaarid) {
-            System.out.print(kommentaar);
-        }
-    }
 
     public Arutelud(File aruteluFail) throws FileNotFoundException, IOException {
         try {

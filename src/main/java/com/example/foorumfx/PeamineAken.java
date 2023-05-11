@@ -86,28 +86,7 @@ public class PeamineAken extends Application {
 //---------------------------------------------------------------------------------------------
 
         Lisa.setLayoutX(-200);
-        Lisa.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String pealkiri = aruteluValik.getText();
-                boolean konflikt = false;
-                for (Arutelud teema : Arutelude_nimekiri) {
-                    if (teema.getaruteluNimi().equals(pealkiri)) {
-                        VeaTeade veaTeade = new VeaTeade("See arutelu on juba olemas!");
-                        konflikt = true;
-                    }
-                }
-                if (konflikt == false) {
-                    Arutelud uus = new Arutelud(pealkiri, nimi);
-                    Arutelude_nimekiri.add(uus);
-                    try {
-                        uus.kirjutaFaili();
-                    } catch (IOException e) {
-                        VeaTeade veaTeade = new VeaTeade("IOException");
-                    }
-                }
-            }
-        });
+
 
         Group grupp = new Group();
 
@@ -121,6 +100,37 @@ public class PeamineAken extends Application {
         aruteludenimekirjaText.setId("nimekiri");
         aruteludenimekirjaText.setLayoutY(-300);
         aruteludenimekirjaText.setLayoutX(-225);
+
+//----------------Arutelu lisamine-------------------------------------------
+        Lisa.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String pealkiri = aruteluValik.getText();
+                boolean konflikt = false;
+                for (Arutelud teema : Arutelude_nimekiri) {
+                    if (teema.getaruteluNimi().equals(pealkiri)) {
+                        VeaTeade veaTeade = new VeaTeade("See arutelu on juba olemas!");
+                        veaTeade.start(new Stage());
+                        konflikt = true;
+                    }
+                }
+                if (konflikt == false) {
+                    Arutelud uus = new Arutelud(pealkiri, nimi);
+                    Arutelude_nimekiri.add(uus);
+                    StringBuilder teemad = new StringBuilder();
+                    for (Arutelud teema : Arutelude_nimekiri) {
+                        teemad.append(teema+"\n");
+                    }
+                    Text aruteludenimekirjaText = new Text(teemad.toString());
+                    try {
+                        uus.kirjutaFaili();
+                    } catch (IOException e) {
+                        VeaTeade veaTeade = new VeaTeade("IOException");
+                        veaTeade.start(new Stage());
+                    }
+                }
+            }
+        });
 
 //----------------------------------------------------------------------------
 
